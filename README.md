@@ -4,7 +4,7 @@ Moderní webová aplikace pro správu skladu s podporou čárových kódů. Umo�
 
 ![Platform](https://img.shields.io/badge/platform-web-lightgrey)
 ![Build](https://img.shields.io/badge/build-passing-brightgreen)
-![License](https://img.shields.io/github/license/yourusername/yourrepo)
+![License](https://img.shields.io/github/license/YoofeCZ/Sklad)
 ![Python](https://img.shields.io/badge/python-3.8%2B-blue)
 ![Flask](https://img.shields.io/badge/flask-2.x-orange)
 
