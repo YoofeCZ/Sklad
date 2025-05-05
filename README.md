@@ -1,6 +1,6 @@
 # 📦 Skladová aplikace (Flask + Čárové kódy)
 
-Moderní webová aplikace pro správu skladu s podporou čárových kódů. Umožňuje efektivní přidávání, odečítání a inventarizaci položek s intuitivním rozhraním a možností použití skeneru nebo webkamery a plněkompatibilní s mobilními telefony.
+Moderní webová aplikace pro správu skladu s podporou čárových kódů. Umožňuje efektivní přidávání, odečítání a inventarizaci položek s intuitivním rozhraním a možností použití skeneru nebo webkamery a plně kompatibilní s mobilními telefony.
 
 ![Platform](https://img.shields.io/badge/platform-web-lightgrey)
 ![Build](https://img.shields.io/badge/build-passing-brightgreen)
