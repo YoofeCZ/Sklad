@@ -1,0 +1,222 @@
+<!-- templates/inventory.html -->
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Inventura skladu</title>
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0 }
+    body { font-family: sans-serif; background: #f5f5f5; color: #333; padding: 1em }
+    h1 { text-align: center; margin-bottom: 1em }
+
+    .control-bar { text-align: center; margin-bottom: 1em }
+    .control-bar select, .control-bar button {
+      padding: .5em; margin: 0 .5em; border-radius: 4px; border: 1px solid #ccc;
+      background: #fff; cursor: pointer; transition: background .2s
+    }
+    .control-bar button:hover { background: #eee }
+
+    .status { text-align: center; margin-bottom: 1em }
+
+    /* tady kopie z add.html */
+    .scan-controls { text-align: center; margin-bottom: 1em }
+    .scan-controls button {
+      padding: .6em 1.2em; margin: 0 .5em; font-size: 1em;
+      border: none; border-radius: 4px; cursor: pointer; color: #fff;
+      transition: background .2s;
+    }
+    #start-scan { background: #007bff }
+    #start-scan:hover { background: #0056b3 }
+    #stop-scan { background: #dc3545; display: none }
+    #stop-scan:hover { background: #c82333 }
+
+    #scanner-container {
+      display: none; position: relative;
+      width: 300px; height: 80px; margin: 0 auto 1em;
+      overflow: hidden; border: 2px solid #666;
+      border-radius: 4px; background: #000;
+    }
+    #scanner-container video {
+      position: absolute; top: 50%; left: 50%;
+      min-height: 100%; transform: translate(-50%, -50%);
+    }
+
+    #scannedList { list-style: none; padding-left: 0; margin-bottom: 1em }
+
+    .btn-finish {
+      display: block; margin: .5em auto; padding: .6em 1.2em;
+      background: #28a745; color: #fff; border: none;
+      border-radius: 5px; cursor: pointer; transition: background .2s;
+    }
+    .btn-finish:hover { background: #218838 }
+
+  </style>
+</head>
+<body>
+
+  <h1>Inventura skladu</h1>
+
+  <div class="control-bar">
+    <label for="warehouseSelect">Vyberte sklad:</label>
+    <select id="warehouseSelect">
+      <option value="">-- Vyberte --</option>
+      <option value="Minolta" {% if sklad_filter=='Minolta' %}selected{% endif %}>Minolta</option>
+      <option value="CDC"     {% if sklad_filter=='CDC'     %}selected{% endif %}>CDC</option>
+    </select>
+    <button id="startInv">Začít inventuru</button>
+  </div>
+
+  <div id="invArea" style="display:none;">
+    <div class="status">
+      <p>Očekávaný počet kusů: <strong id="expectedCount">0</strong></p>
+      <p>Naskenováno: <strong id="scannedCount">0</strong></p>
+    </div>
+
+    <!-- tady je skener: kopie z add.html -->
+    <div class="scan-controls">
+      <button id="start-scan">🔍 Spustit sken</button>
+      <button id="stop-scan">✖ Zastavit</button>
+    </div>
+    <div id="scanner-container">
+      <video id="video" playsinline autoplay muted></video>
+    </div>
+
+    <h2>Historie naskenovaných</h2>
+    <ul id="scannedList"></ul>
+
+    <button class="btn-finish" id="finishBtn">Mám vše naskenováno</button>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    const items = {{ items|tojson }},
+          warehouseSelect = document.getElementById('warehouseSelect'),
+          startInv = document.getElementById('startInv'),
+          invArea = document.getElementById('invArea'),
+          expectedCountEl = document.getElementById('expectedCount'),
+          scannedCountEl  = document.getElementById('scannedCount'),
+          scannedListEl   = document.getElementById('scannedList'),
+          startBtn = document.getElementById('start-scan'),
+          stopBtn  = document.getElementById('stop-scan'),
+          container= document.getElementById('scanner-container'),
+          video    = document.getElementById('video'),
+          finishBtn= document.getElementById('finishBtn');
+    let stream, intervalId, canvas = document.createElement('canvas'),
+        expectedCounts = {}, scannedCounts = {}, expectedTotal = 0;
+
+    // start inventury – reload s filtrem
+    startInv.addEventListener('click', () => {
+      const skl = warehouseSelect.value;
+      if (!skl) return Swal.fire('Vyberte prosím sklad.');
+      window.location = `{{ url_for('inventory') }}?sklad_filter=${skl}`;
+    });
+
+    {% if sklad_filter %}
+    // připrav data
+    Object.entries(items).forEach(([code,it]) => {
+      expectedCounts[code] = it.potrebny_pocet;
+      scannedCounts[code]  = 0;
+      expectedTotal += it.potrebny_pocet;
+    });
+    expectedCountEl.textContent = expectedTotal;
+    invArea.style.display = '';
+
+    // start skenu
+    startBtn.addEventListener('click', async () => {
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({ video:{ facingMode:'environment' }});
+        video.srcObject = stream;
+        container.style.display = 'block';
+        startBtn.style.display = 'none';
+        stopBtn.style.display = 'inline-block';
+
+        canvas.width  = container.clientWidth;
+        canvas.height = container.clientHeight;
+        const ctx = canvas.getContext('2d');
+
+        intervalId = setInterval(async ()=>{
+          ctx.drawImage(video,
+            (video.videoWidth-canvas.width)/2,
+            (video.videoHeight-canvas.height)/2,
+            canvas.width, canvas.height,
+            0,0,canvas.width,canvas.height
+          );
+          const dataUrl = canvas.toDataURL('image/png');
+          const resp = await fetch('{{ url_for("scan_frame") }}',{
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body: JSON.stringify({ image:dataUrl })
+          });
+          const json = await resp.json();
+          (json.codes||[]).forEach(code=>{
+            if (expectedCounts[code] && scannedCounts[code] < expectedCounts[code]) {
+              scannedCounts[code]++;
+              updateScannedUI();
+            }
+          });
+        }, 500);
+
+      } catch(err){
+        Swal.fire('Chyba přístupu ke kameře', err.message);
+      }
+    });
+
+    // stop skenu
+    stopBtn.addEventListener('click', ()=>{
+      clearInterval(intervalId);
+      stream.getTracks().forEach(t=>t.stop());
+      container.style.display ='none';
+      startBtn.style.display  ='inline-block';
+      stopBtn.style.display   ='none';
+    });
+
+    // aktualizuj historii
+    function updateScannedUI(){
+      const total = Object.values(scannedCounts).reduce((a,b)=>a+b,0);
+      scannedCountEl.textContent = total;
+      scannedListEl.innerHTML = '';
+      Object.entries(scannedCounts).forEach(([code,cnt])=>{
+        if(cnt>0) scannedListEl.innerHTML += `<li>${code}: ${cnt}</li>`;
+      });
+    }
+
+    // při dokončení zobraz missing
+    finishBtn.addEventListener('click', ()=>{
+      const missing = [], 
+            popupTotal = [];
+      Object.entries(expectedCounts).forEach(([code,need])=>{
+        const have = scannedCounts[code]||0;
+        if(have<need){
+          missing.push({ code, nazev: items[code].nazev, chybi: need - have });
+          popupTotal.push(need - have);
+        }
+      });
+      const missingSum = popupTotal.reduce((a,b)=>a+b,0);
+      if(!missing.length){
+        Swal.fire('✅ Všechno naskenováno!', 'Nenachází se žádné chybějící položky.');
+      } else {
+        let html = `<p><strong>Chybí ${missingSum} z ${expectedTotal} ks na skladě</strong></p>`;
+        html += `<table style="width:100%;text-align:left;margin-top:.5em">
+                  <tr><th>Kód</th><th>Název</th><th>Chybí ks</th></tr>`;
+        missing.forEach(m=>{
+          html += `<tr>
+                     <td>${m.code}</td>
+                     <td>${m.nazev}</td>
+                     <td>${m.chybi}</td>
+                   </tr>`;
+        });
+        html += `</table>`;
+        Swal.fire({
+          icon: 'warning',
+          title: 'Chybějící položky',
+          html,
+          width: '600px'
+        });
+      }
+    });
+    {% endif %}
+  </script>
+</body>
+</html>

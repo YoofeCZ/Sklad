@@ -1,0 +1,246 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Skladová aplikace</title>
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: sans-serif; background: #f5f5f5; color: #333; padding: 1em; }
+    h1 { text-align: center; margin-bottom: 1em; }
+
+    .btn-add, .btn-inv {
+      display: inline-block; width: 180px; margin: 0 0.5em 1em;
+      padding: 0.6em 1em; background: #28a745; color: #fff;
+      text-align: center; text-decoration: none; border-radius: 5px;
+      font-size: 1em; transition: background 0.2s;
+    }
+    .btn-inv { background: #17a2b8; }
+    .btn-add:hover { background: #218838; }
+    .btn-inv:hover { background: #117a8b; }
+
+    .filter-bar {
+      margin-bottom: 1em; text-align: center;
+    }
+    .filter-bar input,
+    .filter-bar select {
+      margin-right: 0.5em; padding: 0.5em;
+      border-radius: 4px; border: 1px solid #ccc;
+    }
+
+    .table-wrapper {
+      background: #fff; border-radius: 6px;
+      overflow-x: auto; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    table {
+      width: 100%; border-collapse: collapse; min-width: 600px;
+    }
+    th, td {
+      padding: 0.75em 1em; border-bottom: 1px solid #e0e0e0;
+      text-align: left;
+    }
+    th {
+      background: #333; color: #fff;
+      position: sticky; top: 0;
+    }
+    tr:hover { background: #f1f1f1; }
+
+    button.action {
+      padding: 0.4em 0.8em; margin-right: 0.4em;
+      border: none; border-radius: 4px;
+      font-size: 0.9em; cursor: pointer; transition: opacity 0.2s;
+    }
+    button.delete { background: #dc3545; color: #fff; }
+    button.delete:hover { opacity: 0.8; }
+    button.minus { background: #ffc107; color: #000; }
+    button.minus:hover { opacity: 0.8; }
+
+    @media (max-width: 600px) {
+      .btn-add, .btn-inv { width: 100%; font-size: 0.95em; display: block; margin: 0 auto 1em; }
+      table { min-width: 0; }
+      th, td { padding: 0.5em; font-size: 0.9em; }
+      button.action { font-size: 0.85em; padding: 0.3em 0.6em; }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Skladové položky</h1>
+  <div style="text-align:center;">
+    <a href="{{ url_for('add_item') }}" class="btn-add">➕ Přidat položku</a>
+    <a href="{{ url_for('inventory') }}{% if sklad_filter %}?sklad_filter={{ sklad_filter }}{% endif %}" class="btn-inv">📋 Inventura</a>
+  </div>
+
+  <!-- Filter/Search/Sort -->
+  <div class="filter-bar">
+    <input id="searchInput" type="text" placeholder="Hledat..." />
+    <select id="skladFilter">
+      <option value="">Všechny sklady</option>
+      <option value="Minolta">Minolta</option>
+      <option value="CDC">CDC</option>
+    </select>
+    <select id="sortSelect">
+      <option value="code_asc">Seřadit podle kódu</option>
+      <option value="name_asc">Seřadit podle názvu</option>
+    </select>
+  </div>
+
+  <!-- Počet zobrazených položek -->
+  <p>Počet zobrazených položek: <strong id="countDisplay">{{ sklad|length }}</strong></p>
+
+  <div class="table-wrapper">
+    <table id="skladTable">
+      <thead>
+        <tr>
+          <th>Kód</th>
+          <th>Název</th>
+          <th>Popis</th>
+          <th>Potřebný počet</th>
+          <th>Aktuální počet</th>
+          <th>Sklad</th>
+          <th>Akce</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for code, item in sklad.items() %}
+          <tr
+            data-code="{{ code|lower }}"
+            data-name="{{ item['nazev']|lower }}"
+            data-sklad="{{ item.get('sklad','') }}"
+          >
+            <td>{{ code }}</td>
+            <td>{{ item['nazev'] }}</td>
+            <td>{{ item['popis'] }}</td>
+            <td>{{ item['potrebny_pocet'] }}</td>
+            <td>{{ item['aktualni_pocet'] }}</td>
+            <td>{{ item.get('sklad','') }}</td>
+            <td>
+              <button class="action delete"
+                      onclick="deleteItemSwal('{{ code }}','{{ item['nazev'] }}')">
+                Smazat
+              </button>
+              <button class="action minus"
+                      onclick="removeCountSwal('{{ code }}')">
+                − Kus
+              </button>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    const searchInput  = document.getElementById('searchInput');
+    const skladFilter  = document.getElementById('skladFilter');
+    const sortSelect   = document.getElementById('sortSelect');
+    const tableBody    = document.querySelector('#skladTable tbody');
+    const countDisplay = document.getElementById('countDisplay');
+
+    searchInput.addEventListener('input', filterTable);
+    skladFilter.addEventListener('change', () => {
+      filterTable();
+      // update inventory button href to maintain sklad_filter
+      const invBtn = document.querySelector('.btn-inv');
+      const sf = skladFilter.value;
+      invBtn.href = sf
+        ? `{{ url_for('inventory') }}?sklad_filter=${sf}`
+        : `{{ url_for('inventory') }}`;
+    });
+    sortSelect.addEventListener('change', () => {
+      sortTable();
+      filterTable();
+    });
+
+    function filterTable() {
+      const q   = searchInput.value.trim().toLowerCase();
+      const skl = skladFilter.value;
+      let visibleCount = 0;
+
+      Array.from(tableBody.rows).forEach(row => {
+        const code = row.dataset.code;
+        const name = row.dataset.name;
+        const sklad = row.dataset.sklad;
+
+        const matchesSearch = !q || code.includes(q) || name.includes(q);
+        const matchesSklad  = !skl || sklad === skl;
+
+        if (matchesSearch && matchesSklad) {
+          row.style.display = '';
+          visibleCount++;
+        } else {
+          row.style.display = 'none';
+        }
+      });
+
+      countDisplay.textContent = visibleCount;
+    }
+
+    function sortTable() {
+      const rows = Array.from(tableBody.rows);
+      const mode = sortSelect.value;
+
+      rows.sort((a, b) => {
+        let valA = mode === 'name_asc' ? a.dataset.name : a.dataset.code;
+        let valB = mode === 'name_asc' ? b.dataset.name : b.dataset.code;
+        const aIsNum = /^\d/.test(valA);
+        const bIsNum = /^\d/.test(valB);
+        if (aIsNum !== bIsNum) return aIsNum ? -1 : 1;
+        return valA.localeCompare(valB, 'cs');
+      });
+
+      rows.forEach(r => tableBody.appendChild(r));
+    }
+
+    // Inicializace
+    sortTable();
+    filterTable();
+
+    // SweetAlert2 akce
+    function removeCountSwal(code) {
+      Swal.fire({
+        title: 'Kolik kusů chcete odebrat?',
+        input: 'number',
+        inputLabel: 'Počet k odebrání',
+        inputValue: 1,
+        inputAttributes: { min: 1 },
+        showCancelButton: true,
+        confirmButtonText: 'Odebrat',
+        cancelButtonText: 'Zrušit'
+      }).then((result) => {
+        if (result.isConfirmed && result.value > 0) {
+          const form = document.createElement('form');
+          form.method = 'POST';
+          form.action = '/remove_count/' + encodeURIComponent(code);
+          const inp = document.createElement('input');
+          inp.type = 'hidden'; inp.name = 'count'; inp.value = result.value;
+          form.appendChild(inp);
+          document.body.appendChild(form);
+          form.submit();
+        }
+      });
+    }
+
+    function deleteItemSwal(code, name) {
+      Swal.fire({
+        title: `Opravdu smazat položku „${name}“?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Ano, smazat',
+        cancelButtonText: 'Ne, zrušit'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const form = document.createElement('form');
+          form.method = 'POST';
+          form.action = '/delete/' + encodeURIComponent(code);
+          document.body.appendChild(form);
+          form.submit();
+        }
+      });
+    }
+  </script>
+</body>
+</html>

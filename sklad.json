@@ -1,0 +1,394 @@
+{
+  "4658015106": {
+    "nazev": "Roller Assy",
+    "popis": "",
+    "potrebny_pocet": 1,
+    "aktualni_pocet": 1,
+    "sklad": "Minolta"
+  },
+  "9J07330102": {
+    "nazev": "Roller",
+    "popis": "",
+    "potrebny_pocet": 2,
+    "aktualni_pocet": 2,
+    "sklad": "Minolta"
+  },
+  "A0EDM60001": {
+    "nazev": "Relay Connector",
+    "popis": "",
+    "potrebny_pocet": 2,
+    "aktualni_pocet": 2,
+    "sklad": "Minolta"
+  },
+  "A161275600": {
+    "nazev": "Timing belt 335L",
+    "popis": "",
+    "potrebny_pocet": 1,
+    "aktualni_pocet": 1,
+    "sklad": "Minolta"
+  },
+  "A161561601": {
+    "nazev": "Actuator",
+    "popis": "",
+    "potrebny_pocet": 1,
+    "aktualni_pocet": 1,
+    "sklad": "Minolta"
+  },
+  "A161M50300": {
+    "nazev": "Photo sensing",
+    "popis": "",
+    "potrebny_pocet": 1,
+    "aktualni_pocet": 1,
+    "sklad": "Minolta"
+  },
+  "A161R73311": {
+    "nazev": "Intermediate Image T",
+    "popis": "",
+    "potrebny_pocet": 2,
+    "aktualni_pocet": 2,
+    "sklad": "Minolta"
+  },
+  "A2XM621100": {
+    "nazev": "Guide",
+    "popis": "",
+    "potrebny_pocet": 2,
+    "aktualni_pocet": 2,
+    "sklad": "Minolta"
+  },
+  "A64J564101": {
+    "nazev": "Paper feed Roller",
+    "popis": "",
+    "potrebny_pocet": 9,
+    "aktualni_pocet": 9,
+    "sklad": "Minolta"
+  },
+  "A64J564201": {
+    "nazev": "Paper feed Roller",
+    "popis": "",
+    "potrebny_pocet": 1,
+    "aktualni_pocet": 1,
+    "sklad": "Minolta"
+  },
+  "A795714602": {
+    "nazev": "Guide Plate",
+    "popis": "",
+    "potrebny_pocet": 1,
+    "aktualni_pocet": 1,
+    "sklad": "Minolta"
+  },
+  "A795R71422": {
+    "nazev": "Middle Transfer ASSY",
+    "popis": "",
+    "potrebny_pocet": 1,
+    "aktualni_pocet": 1,
+    "sklad": "Minolta"
+  },
+  "A796R71433": {
+    "nazev": "Fusing Unit",
+    "popis": "",
+    "potrebny_pocet": 1,
+    "aktualni_pocet": 1,
+    "sklad": "Minolta"
+  },
+  "A7AH562400": {
+    "nazev": "Paper feed Gear",
+    "popis": "",
+    "potrebny_pocet": 1,
+    "aktualni_pocet": 1,
+    "sklad": "Minolta"
+  },
+  "A7AHM20501": {
+    "nazev": "Clutch",
+    "popis": "",
+    "potrebny_pocet": 2,
+    "aktualni_pocet": 2,
+    "sklad": "Minolta"
+  },
+  "A7U40RD": {
+    "nazev": "DR313K Drum black f.",
+    "popis": "",
+    "potrebny_pocet": 1,
+    "aktualni_pocet": 1,
+    "sklad": "Minolta"
+  },
+  "A8H403D": {
+    "nazev": "DV912K Developer f.",
+    "popis": "",
+    "potrebny_pocet": 1,
+    "aktualni_pocet": 1,
+    "sklad": "Minolta"
+  },
+  "A8H40RD": {
+    "nazev": "DR912K Drum f. bizhu",
+    "popis": "",
+    "potrebny_pocet": 1,
+    "aktualni_pocet": 1,
+    "sklad": "Minolta"
+  },
+  "A93E704800": {
+    "nazev": "Cushion",
+    "popis": "",
+    "potrebny_pocet": 2,
+    "aktualni_pocet": 2,
+    "sklad": "Minolta"
+  },
+  "A93EN11412": {
+    "nazev": "Scanner Flat Cable",
+    "popis": "",
+    "potrebny_pocet": 1,
+    "aktualni_pocet": 1,
+    "sklad": "Minolta"
+  },
+  "A93EN11G00": {
+    "nazev": "ADF Flat Cable",
+    "popis": "",
+    "potrebny_pocet": 1,
+    "aktualni_pocet": 1,
+    "sklad": "Minolta"
+  },
+  "AA2J560000": {
+    "nazev": "Paper feed Roller",
+    "popis": "",
+    "potrebny_pocet": 7,
+    "aktualni_pocet": 7,
+    "sklad": "Minolta"
+  },
+  "AA2J810511": {
+    "nazev": "Guide Plate 4",
+    "popis": "",
+    "potrebny_pocet": 1,
+    "aktualni_pocet": 1,
+    "sklad": "Minolta"
+  },
+  "AA2J810611": {
+    "nazev": "Roller 1",
+    "popis": "",
+    "potrebny_pocet": 1,
+    "aktualni_pocet": 1,
+    "sklad": "Minolta"
+  },
+  "AA2J901101": {
+    "nazev": "Roller",
+    "popis": "",
+    "potrebny_pocet": 1,
+    "aktualni_pocet": 1,
+    "sklad": "Minolta"
+  },
+  "AA2JR70433": {
+    "nazev": "Fusing Unit (220-240",
+    "popis": "",
+    "potrebny_pocet": 1,
+    "aktualni_pocet": 1,
+    "sklad": "Minolta"
+  },
+  "AA2JR72011": {
+    "nazev": "2nd Image Transfer R",
+    "popis": "",
+    "potrebny_pocet": 1,
+    "aktualni_pocet": 1,
+    "sklad": "Minolta"
+  },
+  "AA2JR72822": {
+    "nazev": "Reverse Assy",
+    "popis": "",
+    "potrebny_pocet": 1,
+    "aktualni_pocet": 1,
+    "sklad": "Minolta"
+  },
+  "AA2JR73700": {
+    "nazev": "Intermediate Image T",
+    "popis": "",
+    "potrebny_pocet": 1,
+    "aktualni_pocet": 1,
+    "sklad": "Minolta"
+  },
+  "AA7NR70411": {
+    "nazev": "2nd Image Transfer R",
+    "popis": "",
+    "potrebny_pocet": 1,
+    "aktualni_pocet": 1,
+    "sklad": "Minolta"
+  },
+  "AA7NR72811": {
+    "nazev": "Waste Toner Conveyan",
+    "popis": "",
+    "potrebny_pocet": 1,
+    "aktualni_pocet": 1,
+    "sklad": "Minolta"
+  },
+  "AA7RR71811": {
+    "nazev": "Fusing Unit (220-240",
+    "popis": "",
+    "potrebny_pocet": 1,
+    "aktualni_pocet": 1,
+    "sklad": "Minolta"
+  },
+  "AAJNR71200": {
+    "nazev": "CIS unit IR",
+    "popis": "",
+    "potrebny_pocet": 1,
+    "aktualni_pocet": 1,
+    "sklad": "Minolta"
+  },
+  "AAJRR70111": {
+    "nazev": "Transfer Unit",
+    "popis": "",
+    "potrebny_pocet": 1,
+    "aktualni_pocet": 1,
+    "sklad": "Minolta"
+  },
+  "AAJRR71422": {
+    "nazev": "Conveyance Paper Fee",
+    "popis": "",
+    "potrebny_pocet": 1,
+    "aktualni_pocet": 1,
+    "sklad": "Minolta"
+  },
+  "AAJV01D": {
+    "nazev": "IUP35K IU black f. b",
+    "popis": "",
+    "potrebny_pocet": 1,
+    "aktualni_pocet": 1,
+    "sklad": "Minolta"
+  },
+  "AAJV06D": {
+    "nazev": "IUP35Y IU yellow f.",
+    "popis": "",
+    "potrebny_pocet": 2,
+    "aktualni_pocet": 2,
+    "sklad": "Minolta"
+  },
+  "AAJV0CD": {
+    "nazev": "IUP35M IU magenta f.",
+    "popis": "",
+    "potrebny_pocet": 1,
+    "aktualni_pocet": 1,
+    "sklad": "Minolta"
+  },
+  "AAJV0CE": {
+    "nazev": "IUP36M IU magenta f.",
+    "popis": "",
+    "potrebny_pocet": 1,
+    "aktualni_pocet": 1,
+    "sklad": "Minolta"
+  },
+  "AAJV0HD": {
+    "nazev": "IUP35C IU cyan f. bi",
+    "popis": "",
+    "potrebny_pocet": 1,
+    "aktualni_pocet": 1,
+    "sklad": "Minolta"
+  },
+  "AAV703D": {
+    "nazev": "DV315K Dev. black f.",
+    "popis": "",
+    "potrebny_pocet": 1,
+    "aktualni_pocet": 1,
+    "sklad": "Minolta"
+  },
+  "AAV708D": {
+    "nazev": "DV315Y Dev. yellow f",
+    "popis": "",
+    "potrebny_pocet": 1,
+    "aktualni_pocet": 1,
+    "sklad": "Minolta"
+  },
+  "AAV70ED": {
+    "nazev": "DV315M Dev. magenta",
+    "popis": "",
+    "potrebny_pocet": 1,
+    "aktualni_pocet": 1,
+    "sklad": "Minolta"
+  },
+  "AAV70KD": {
+    "nazev": "DV315C Dev. cyan f.",
+    "popis": "",
+    "potrebny_pocet": 1,
+    "aktualni_pocet": 1,
+    "sklad": "Minolta"
+  },
+  "AAV70RD": {
+    "nazev": "DR316K Drum black f.",
+    "popis": "",
+    "potrebny_pocet": 1,
+    "aktualni_pocet": 1,
+    "sklad": "Minolta"
+  },
+  "AAV70TD": {
+    "nazev": "DR316 Drum YMC f. bi",
+    "popis": "",
+    "potrebny_pocet": 3,
+    "aktualni_pocet": 3,
+    "sklad": "Minolta"
+  },
+  "ACDNWY1": {
+    "nazev": "WB-P08 Waste Toner B",
+    "popis": "",
+    "potrebny_pocet": 1,
+    "aktualni_pocet": 1,
+    "sklad": "Minolta"
+  },
+  "ACT9R70200": {
+    "nazev": "Fusing Unit (230V)",
+    "popis": "",
+    "potrebny_pocet": 1,
+    "aktualni_pocet": 1,
+    "sklad": "Minolta"
+  },
+  "ACT9R70300": {
+    "nazev": "Transfer Unit",
+    "popis": "",
+    "potrebny_pocet": 1,
+    "aktualni_pocet": 1,
+    "sklad": "Minolta"
+  },
+  "ACV803D": {
+    "nazev": "DV621K Dev. black f.",
+    "popis": "",
+    "potrebny_pocet": 1,
+    "aktualni_pocet": 1,
+    "sklad": "Minolta"
+  },
+  "ACV808D": {
+    "nazev": "DV621Y Dev. yellow f",
+    "popis": "",
+    "potrebny_pocet": 1,
+    "aktualni_pocet": 1,
+    "sklad": "Minolta"
+  },
+  "ACV80ED": {
+    "nazev": "DV621M Dev. magenta",
+    "popis": "",
+    "potrebny_pocet": 1,
+    "aktualni_pocet": 1,
+    "sklad": "Minolta"
+  },
+  "ACV80KD": {
+    "nazev": "DV621C Dev. cyan f.",
+    "popis": "",
+    "potrebny_pocet": 1,
+    "aktualni_pocet": 1,
+    "sklad": "Minolta"
+  },
+  "ACV80RE": {
+    "nazev": "DR618K Drum Bk f.biz",
+    "popis": "",
+    "potrebny_pocet": 1,
+    "aktualni_pocet": 1,
+    "sklad": "Minolta"
+  },
+  "ACV80TE": {
+    "nazev": "DR618 Drum YMC f.biz",
+    "popis": "",
+    "potrebny_pocet": 3,
+    "aktualni_pocet": 3,
+    "sklad": "Minolta"
+  },
+  "AD1YWY1": {
+    "nazev": "WX-108 Waste toner b",
+    "popis": "",
+    "potrebny_pocet": 1,
+    "aktualni_pocet": 1,
+    "sklad": "Minolta"
+  }
+}
